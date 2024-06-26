@@ -1,9 +1,6 @@
 package br.com.alura.screenmatch.principal;
 
-import br.com.alura.screenmatch.model.DadosSerie;
-import br.com.alura.screenmatch.model.DadosTemporada;
-import br.com.alura.screenmatch.model.Episodio;
-import br.com.alura.screenmatch.model.Serie;
+import br.com.alura.screenmatch.model.*;
 import br.com.alura.screenmatch.repository.SerieRepository;
 import br.com.alura.screenmatch.service.ConsumoApi;
 import br.com.alura.screenmatch.service.ConverteDados;
@@ -37,6 +34,8 @@ public class Principal {
                     4 - Buscar série por título
                     5 - Buscar série por autor
                     6 - Top 5 séries
+                    7 - Buscar série por categoria
+                    8 - Desafio
                     0 - Sair
                     """;
 
@@ -64,6 +63,9 @@ public class Principal {
                     break;
                 case 7:
                     buscarPorCategoria();
+                    break;
+                case 8:
+                    desafio();
                     break;
                 case 0:
                     System.out.println("Saindo...");
@@ -151,6 +153,18 @@ public class Principal {
                 System.out.println(s.getTitulo() + " avaliação: " + s.getAvaliacao()));
     }
     private void buscarPorCategoria(){
-
+        System.out.println("Deseja qual categoria/gênero: ");
+        var nomeGenero = leitura.nextLine();
+        Categoria categoria = Categoria.fromPortugues(nomeGenero);
+        List<Serie> seriesPorCategoria = repository.findByGenero(categoria);
+        System.out.println("Séries da categoria: " + nomeGenero);
+        seriesPorCategoria.forEach(System.out::println);
+    }
+    private void desafio() {
+        System.out.println("Informe a quantidade de temporadas e a avaliação: ");
+        var temporadas = leitura.nextInt();
+        var avaliacao = leitura.nextDouble();
+        List<Serie> seriesFiltradasPorTemporadaEAvaliacao = repository.findByTotalTemporadasGreaterThanEqualAndAvaliacaoGreaterThanEqual(temporadas, avaliacao);
+        seriesFiltradasPorTemporadaEAvaliacao.forEach(System.out::println);
     }
 }
