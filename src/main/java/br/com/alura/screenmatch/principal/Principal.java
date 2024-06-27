@@ -67,6 +67,9 @@ public class Principal {
                 case 8:
                     desafio();
                     break;
+                case 9:
+                    buscarEpisodioPorTrecho();
+                    break;
                 case 0:
                     System.out.println("Saindo...");
                     break;
@@ -164,7 +167,17 @@ public class Principal {
         System.out.println("Informe a quantidade de temporadas e a avaliação: ");
         var temporadas = leitura.nextInt();
         var avaliacao = leitura.nextDouble();
-        List<Serie> seriesFiltradasPorTemporadaEAvaliacao = repository.findByTotalTemporadasGreaterThanEqualAndAvaliacaoGreaterThanEqual(temporadas, avaliacao);
+        List<Serie> seriesFiltradasPorTemporadaEAvaliacao = repository.seriesPorTemporadaEAvaliacao(temporadas, avaliacao);
         seriesFiltradasPorTemporadaEAvaliacao.forEach(System.out::println);
+    }
+
+    private void buscarEpisodioPorTrecho() {
+        System.out.println("Qual o nome do episodio para busca? ");
+        var trecho = leitura.nextLine();
+        List<Episodio> episodiosEncontrados = repository.episodiosPorTrecho(trecho);
+        episodiosEncontrados.forEach(e ->
+                System.out.printf("Série: %s Temporada %s - Episódio %s - %s\n",
+                        e.getSerie().getTitulo(), e.getTemporada(),
+                        e.getNumeroEpisodio(), e.getTitulo()));
     }
 }
